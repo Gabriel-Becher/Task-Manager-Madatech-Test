@@ -40,9 +40,8 @@ class TaskModel extends Model
         ],
         'status' => [
             'label' => 'Status',
-            'rules' => 'required|in_list[pendente,em andamento,concluída]',
+            'rules' => 'in_list[pendente,em andamento,concluída]',
             'errors' => [
-                'required' => 'O campo {field} é obrigatório.',
                 'in_list' => 'O campo {field} deve ser um dos valores válidos.',
             ],
         ],
