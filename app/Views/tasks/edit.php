@@ -8,8 +8,8 @@
 </head>
 <body style="background-color: #f9ffd7;" class="h-100 w-100 d-flex flex-column justify-content-center align-items-center">
     <div class="container d-flex flex-column justify-content-between align-items-center h-50">
-        <h1 class="mt-5">Nova tarefa</h1>
-        <form action=<?= site_url('tasks/') ?> method="post" class="form-control w-50 d-flex flex-column justify-content-between align-items-center">
+        <h1 class="mt-5">Editar tarefa</h1>
+        <form action=<?= site_url('tasks/edit/'.$task['id']) ?> method="post" class="form-control w-50 d-flex flex-column justify-content-between align-items-center">
             <?= csrf_field() ?>
             <div class="mb-3 w-100">
                 <label for="title" class="form-label">Título</label>
@@ -23,7 +23,7 @@
                 <label for="status" class="form-label">Status</label>
                 <select class="form-select" id="status" name="status" required>
                     <option value="pendente" <?= old('status') === 'pendente' ? 'selected' : '' ?>>Pendente</option>
-                    <option value="em_progresso" <?= old('status') === 'em_progresso' ? 'selected' : '' ?>>Em Progresso</option>
+                    <option value="em andamento" <?= old('status') === 'em andamento' ? 'selected' : '' ?>>Em Andamento</option>
                     <option value="concluída" <?= old('status') === 'concluída' ? 'selected' : '' ?>>Concluída</option>
                 </select>
             </div>

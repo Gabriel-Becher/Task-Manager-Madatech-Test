@@ -19,6 +19,14 @@
                 <label for="description" class="form-label">Descrição</label>
                 <textarea class="form-control" id="description" name="description" rows="3" ><?= old('description') ?></textarea>
             </div>
+            <div class="mb-3 w-100">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status" required>
+                    <option value="pendente" <?= old('status') === 'pendente' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="em andamento" <?= old('status') === 'em andamento' ? 'selected' : '' ?>>Em Andamento</option>
+                    <option value="concluída" <?= old('status') === 'concluída' ? 'selected' : '' ?>>Concluída</option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Criar Tarefa</button>
         </form>
     </div>
