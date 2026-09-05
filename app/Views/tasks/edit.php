@@ -20,11 +20,12 @@
                 <textarea class="form-control" id="description" name="description" rows="3" ><?= old('description') ?? $task['description'] ?></textarea>
             </div>
             <div class="mb-3 w-100">
+                <?php $selectedStatus = old('status', $task['status'] ?? 'pendente'); ?>
                 <label for="status" class="form-label">Status</label>
                 <select class="form-select" id="status" name="status" required>
-                    <option value="pendente" <?= old('status') === 'pendente' ? 'selected' : '' ?>>Pendente</option>
-                    <option value="em andamento" <?= old('status') === 'em andamento' ? 'selected' : '' ?>>Em Andamento</option>
-                    <option value="concluída" <?= old('status') === 'concluída' ? 'selected' : '' ?>>Concluída</option>
+                    <option value="pendente" <?= $selectedStatus === 'pendente' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="em andamento" <?= $selectedStatus === 'em andamento' ? 'selected' : '' ?>>Em Andamento</option>
+                    <option value="concluída" <?= $selectedStatus === 'concluída' ? 'selected' : '' ?>>Concluída</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Salvar Tarefa</button>
