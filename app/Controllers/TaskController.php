@@ -72,6 +72,10 @@ class TaskController extends BaseController
 
     public function update($id)
     {
+        $exists = $this->db->table('tasks')->getWhere(['id' => $id])->getRowArray();
+        if (empty($exists)) {
+            return redirect()->to(site_url('tasks'))->with('error', 'Tarefa não encontrada.');
+        }
         $updatedData = $this->request->getPost(['title', 'description', 'status']);
         if ($this->taskModel->validate($updatedData)) {
             $this->db->table('tasks')->update($updatedData, ['id' => $id]);
