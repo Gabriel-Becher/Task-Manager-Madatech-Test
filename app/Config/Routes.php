@@ -12,7 +12,7 @@ $routes->group('tasks', function ($routes) {
     $routes->post('/', 'TaskController::store');
 
     $routes ->get('edit/(:num)', 'TaskController::edit/$1');
-    $routes->put('(:num)', 'TaskController::update/$1');
+    $routes->post('edit/(:num)', 'TaskController::update/$1');
     $routes->delete('(:num)', 'TaskController::delete/$1');
 
 });
