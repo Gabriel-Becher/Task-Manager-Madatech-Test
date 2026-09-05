@@ -77,13 +77,13 @@ class TaskController extends BaseController
             return redirect()->to(site_url('tasks'))->with('error', 'Tarefa não encontrada.');
         }
         $updatedData = $this->request->getPost(['title', 'description', 'status']);
-        if ($this->taskModel->validate($updatedData)) {
-            $this->db->table('tasks')->update($updatedData, ['id' => $id]);
-            return redirect()->to(site_url('tasks'))->with('success', 'Tarefa atualizada com sucesso!');
-        } else {
+        if (!$this->taskModel->validate($updatedData)) {
             $errors = $this->taskModel->errors();
             return redirect()->back()->withInput()->with('errors', $errors);
-        }
+        } 
+        $this->db->table('tasks')->update($updatedData, ['id' => $id]);
+        return redirect()->to(site_url('tasks'))->with('success', 'Tarefa atualizada com sucesso!');
+        
     }
 
     public function delete($id)

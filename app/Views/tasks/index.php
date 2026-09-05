@@ -9,6 +9,26 @@
 <body style="background-color: #f9ffd7;" class=" h-100 w-100">
     <div class=" h-100 d-flex flex-column justify-content-center align-items-center">
         <h1 class="mt-3">Gerenciador de Tarefas</h1>
+        <?php if ($success = session()->getFlashdata('success')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= esc($success) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar" ></button>
+            </div>
+        <?php endif ?>
+
+        <?php if ($error = session()->getFlashdata('error')) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= esc($error) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar" ></button>
+            </div>
+        <?php endif ?>
+
+        <?php if (empty($tasks['pendente'])&& empty($tasks['em andamento'])&& empty($tasks['concluída'])) : ?>
+            <div class="alert alert-info">
+                Nenhuma tarefa cadastrada.
+            </div>
+        <?php endif ?>
+        
         <div class="container w-100 mt-4 d-flex flex-column justify-content-center align-items-center">
             <div class="row mb-4 w-100 d-flex flex-column align-items-start">
                 <h2 class="text-danger d-block">Pendentes</h2>

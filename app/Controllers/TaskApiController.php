@@ -26,12 +26,16 @@ class TaskApiController extends BaseController{
 
     public function store()
     {
-        $jsonData = $this->request->getJSON();
+        $jsonData = $this->request->getJSON(true);
+
+        if (! is_array($jsonData)) {
+            return $this->response->setJSON(['message' => 'Formato inválido'])->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST);
+        }
 
         $data = [
-            'title' => $jsonData->title ?? null,
-            'description' => $jsonData->description ?? null,
-            'status' => $jsonData->status ?? null
+            'title' => $jsonData['title'] ?? null,
+            'description' => $jsonData['description'] ?? null,
+            'status' => $jsonData['status'] ?? null
         ];
 
         if ($this->taskModel->validate($data)) {
@@ -58,31 +62,34 @@ class TaskApiController extends BaseController{
 
     public function update($id)
     {
-        $jsonData = $this->request->getJSON();
-        $data = [
-            'title' => $jsonData->title ?? null,
-            'description' => $jsonData->description ?? null,
-            'status' => $jsonData->status ?? null
-        ];
-
-        if(!$this->taskModel->validate($data)) {
-            $errors = $this->taskModel->errors();
-            return $this->response->setJSON(['errors' => $errors])->setStatusCode(ResponseInterface::HTTP_UNPROCESSABLE_ENTITY);
-        }
 
         $exists = $this->db->table('tasks')->getWhere(['id' => $id])->getRowArray();
         if (empty($exists)) {
             return $this->response->setJSON(['message' => 'Tarefa não encontrada'])->setStatusCode(ResponseInterface::HTTP_NOT_FOUND);
         }
 
-        $this->db->table('tasks')->update($data, ['id' => $id]);
+        $jsonData = $this->request->getJSON(true);
 
-        if ($this->db->affectedRows() > 0) {
-            $updatedTask = $this->db->table('tasks')->getWhere(['id' => $id])->getRowArray();
-            return $this->response->setJSON($updatedTask)->setStatusCode(ResponseInterface::HTTP_OK);
-        } else {
-            return $this->response->setJSON(['message' => 'Nenhuma alteração foi feita'])->setStatusCode(ResponseInterface::HTTP_OK);
+        if(!is_array($jsonData)){
+            return $this->response->setJSON(['message' => 'Formato inválido'])->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST);
         }
+
+        $updatedData = [
+            'title' => $jsonData['title'] ?? null,
+            'description' => $jsonData['description'] ?? null,
+            'status' => $jsonData['status'] ?? null
+        ];
+
+        if(!$this->taskModel->validate($updatedData)) {
+            $errors = $this->taskModel->errors();
+            return $this->response->setJSON(['errors' => $errors])->setStatusCode(ResponseInterface::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $this->db->table('tasks')->update($updatedData, ['id' => $id]);
+
+        $updatedTask = $this->db->table('tasks')->getWhere(['id' => $id])->getRowArray();
+        return $this->response->setJSON($updatedTask)->setStatusCode(ResponseInterface::HTTP_OK);
+        
     }
 
     public function delete($id)

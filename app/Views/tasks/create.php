@@ -7,12 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body style="background-color: #f9ffd7;" class="h-100 w-100 d-flex flex-column justify-content-center align-items-center">
-    <?php if (session('success')) : ?>
-        <div class="alert alert-success">
-            <?= esc(session('success')) ?>
-        </div>
-    <?php endif ?>
-
+    
     <?php if (session('error')) : ?>
         <div class="alert alert-danger">
             <?= esc(session('error')) ?>
