@@ -33,8 +33,8 @@ class TaskController extends BaseController
                 case 'pendente':
                     $tasks['pendente'][] = $task;
                     break;
-                case 'em_progresso':
-                    $tasks['em progresso'][] = $task;
+                case 'em andamento':
+                    $tasks['em andamento'][] = $task;
                     break;
                 case 'concluída':
                     $tasks['concluída'][] = $task;
@@ -52,14 +52,13 @@ class TaskController extends BaseController
 
     public function store()
     {
-        $data = $this->request->getPost(['title', 'description']);
+        $data = $this->request->getPost(['title', 'description','status']);
         if ($this->taskModel->validate($data)) {
             $this->db->table('tasks')->insert($data);
             return redirect()->to(site_url('tasks'))->with('success', 'Tarefa criada com sucesso!');
         }else {
             $errors = $this->taskModel->errors();
             return redirect()->back()->withInput()->with('errors', $errors);
-
         }
     }
 
@@ -72,7 +71,14 @@ class TaskController extends BaseController
 
     public function update($id)
     {
-        //
+        $updatedData = $this->request->getPost(['title', 'description', 'status']);
+        if ($this->taskModel->validate($updatedData)) {
+            $this->db->table('tasks')->update($updatedData, ['id' => $id]);
+            return redirect()->to(site_url('tasks'))->with('success', 'Tarefa atualizada com sucesso!');
+        } else {
+            $errors = $this->taskModel->errors();
+            return redirect()->back()->withInput()->with('errors', $errors);
+        }
     }
 
     public function delete($id)
