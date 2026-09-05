@@ -43,7 +43,7 @@ class TaskApiController extends BaseController{
             return $this->response->setJSON($newTask)->setStatusCode(ResponseInterface::HTTP_CREATED);
         }else {
             $errors = $this->taskModel->errors();
-            return $this->response->setJSON(['errors' => $errors])->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST);
+            return $this->response->setJSON(['errors' => $errors])->setStatusCode(ResponseInterface::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
