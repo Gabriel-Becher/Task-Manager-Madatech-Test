@@ -1,69 +1,89 @@
-# CodeIgniter 4 Application Starter
+# Teste de Desenvolvimento CodeIgniter 4 - Madatech
 
-## What is CodeIgniter?
+## Requisitos
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+- Banco de dados MySQL
+- PHP 8.2+
+- Composer
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+### Extensões do PHP
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+- mysqli
+- intl
+- mbstring
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## Como executar(Em Windows apenas)
 
-## Installation & updates
+### 1 - Instalar as dependências
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+```bash
+composer install
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 2 - Copie env para .env e configure a conexão com o banco de dados:
 
-## Setup
+```env
+#--------------------------------------------------------------------
+# ENVIRONMENT
+#--------------------------------------------------------------------
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+CI_ENVIRONMENT = development
 
-## Important Change with index.php
+#--------------------------------------------------------------------
+# DATABASE
+#--------------------------------------------------------------------
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+database.default.hostname = localhost
+database.default.database = nome_banco
+database.default.username = username
+database.default.password = password
+database.default.DBDriver = MySQLi
+database.default.DBPrefix =
+database.default.port = 3306
+```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+### 3 - Caso seu banco não exista, crie com este comando no cli do MySQL
 
-**Please** read the user guide for a better explanation of how CI4 works!
+```SQL
+CREATE DATABASE task_manager CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-## Repository Management
+### 4 - Execute a migration e inicie a aplicação:
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+```bash
+php spark migrate
+php spark serve
+```
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+### 5 - Acesse http://localhost:8080/tasks
 
-## Server Requirements
+## API REST
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+### URL base: http://localhost:8080/api/tasks
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+| Método | Rota            | Descrição              |
+| ------ | --------------- | ---------------------- |
+| GET    | /api/tasks      | Lista todas as tarefas |
+| GET    | /api/tasks/{id} | Retorna uma tarefa     |
+| POST   | /api/tasks      | Cria uma tarefa        |
+| PUT    | /api/tasks/{id} | Atualiza uma tarefa    |
+| DELETE | /api/tasks/{id} | Exclui uma tarefa      |
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+Ao criar ou atualizar uma tarefa utilize
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+```
+Content-Type: application/json
+```
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+Payload
+
+```JSON
+{
+    "title": "Aprender PHP",
+    "description": "Entregar no prazo",
+    "status": "pendente"
+}
+```
+
+Descrição é opcional.
+Status permitidos: "pendente", "em andamento" e "concluída"
