@@ -38,7 +38,7 @@ class TaskApiController extends BaseController{
             $this->db->table('tasks')->insert($data);
             $insertedId = $this->db->insertID();
 
-            $newTask = $this->db->table('tasks')->getWhere(['id' => $insertedId])->getResultObject();
+            $newTask = $this->db->table('tasks')->getWhere(['id' => $insertedId])->getRowArray();
 
             return $this->response->setJSON($newTask)->setStatusCode(ResponseInterface::HTTP_CREATED);
         }else {
@@ -49,7 +49,7 @@ class TaskApiController extends BaseController{
 
     public function show($id)
     {
-        $task = $this->db->table('tasks')->getWhere(['id'=>$id])->getResultObject();
+        $task = $this->db->table('tasks')->getWhere(['id'=>$id])->getRowArray();
         if(empty($task)){
             return $this->response->setJSON(['message'=>'Tarefa não encontrada'])->setStatusCode(ResponseInterface::HTTP_NOT_FOUND);
         }
@@ -65,7 +65,12 @@ class TaskApiController extends BaseController{
             'status' => $jsonData->status ?? null
         ];
 
-        $exists = $this->db->table('tasks')->getWhere(['id' => $id])->getResultObject();
+        if(!$this->taskModel->validate($data)) {
+            $errors = $this->taskModel->errors();
+            return $this->response->setJSON(['errors' => $errors])->setStatusCode(ResponseInterface::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $exists = $this->db->table('tasks')->getWhere(['id' => $id])->getRowArray();
         if (empty($exists)) {
             return $this->response->setJSON(['message' => 'Tarefa não encontrada'])->setStatusCode(ResponseInterface::HTTP_NOT_FOUND);
         }
@@ -84,7 +89,9 @@ class TaskApiController extends BaseController{
     {
         $this->db->table('tasks')->delete(['id'=>$id]);
         if($this->db->affectedRows()>0){
-            return $this->response->setStatusCode(ResponseInterface::HTTP_OK);
+            return $this->response->setStatusCode(ResponseInterface::HTTP_NO_CONTENT);
+        }else{
+            return $this->response->setJSON(['message'=>'Tarefa não encontrada'])->setStatusCode(ResponseInterface::HTTP_NOT_FOUND);
         }
     }
 }
