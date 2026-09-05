@@ -78,7 +78,7 @@ class TaskApiController extends BaseController{
         $this->db->table('tasks')->update($data, ['id' => $id]);
 
         if ($this->db->affectedRows() > 0) {
-            $updatedTask = $this->db->table('tasks')->getWhere(['id' => $id])->getResultObject();
+            $updatedTask = $this->db->table('tasks')->getWhere(['id' => $id])->getRowArray();
             return $this->response->setJSON($updatedTask)->setStatusCode(ResponseInterface::HTTP_OK);
         } else {
             return $this->response->setJSON(['message' => 'Nenhuma alteração foi feita'])->setStatusCode(ResponseInterface::HTTP_OK);
