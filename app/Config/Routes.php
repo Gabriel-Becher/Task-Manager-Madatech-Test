@@ -11,7 +11,7 @@ $routes->group('tasks', function ($routes) {
     $routes->get('new', 'TaskController::create');
     $routes->post('/', 'TaskController::store');
 
-    $routes ->get('edit/(:num)', 'TaskController::edit/$1');
+    $routes->get('edit/(:num)', 'TaskController::edit/$1');
     $routes->post('edit/(:num)', 'TaskController::update/$1');
     $routes->delete('(:num)', 'TaskController::delete/$1');
 
