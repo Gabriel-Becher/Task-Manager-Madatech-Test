@@ -27,16 +27,13 @@ class CreateTasksTable extends Migration
                 'type'       => 'ENUM',
                 'constraint' => ['pendente', 'em andamento', 'concluída'],
                 'default'    => 'pendente',
-                'null'       => false,
             ],
             'created_at' => [
                 'type'    => 'TIMESTAMP',
-                'null'    => false,
                 'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
             'updated_at' => [
                 'type'    => 'TIMESTAMP',
-                'null'    => false,
                 'default' => new RawSql('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
             ],
         ]);
