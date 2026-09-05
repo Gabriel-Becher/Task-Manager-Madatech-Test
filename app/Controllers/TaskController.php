@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\TaskModel;
-use CodeIgniter\HTTP\ResponseInterface;
 
 
 class TaskController extends BaseController
@@ -23,9 +22,9 @@ class TaskController extends BaseController
     {
         $allTasks = $this->taskModel->findAll();
         $tasks = [
-            'pending' => [],
-            'in_progress' => [],
-            'completed' => []
+            'pendente' => [],
+            'em andamento' => [],
+            'concluída' => []
         ];
 
         foreach ($allTasks as $task) {
@@ -64,8 +63,10 @@ class TaskController extends BaseController
 
     public function edit($id)
     {
-        $task = $this->taskModel->find($id);
-
+        $task = $this->taskModel->getWhere(['id' => $id])->getRowArray();
+        if(empty($task)){
+            return redirect()->to(site_url('tasks'))->with('error', 'Tarefa não encontrada.');
+        }
         return view('tasks/edit', ['task' => $task]);
     }
 
