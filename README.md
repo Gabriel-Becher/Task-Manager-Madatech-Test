@@ -55,6 +55,13 @@ php spark migrate
 php spark serve
 ```
 
+### 4.1 - Caso a tabela não seja criada por algum erro, execute novamente
+
+```bash
+php spark migrate:refresh
+php spark serve
+```
+
 ### 5 - Acesse http://localhost:8080/tasks
 
 ## API REST
